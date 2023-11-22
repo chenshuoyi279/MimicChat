@@ -2,7 +2,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Annoy
 
 
-def searcher():
+def searcher(query):
     # Create an instance of OpenAIEmbeddings
     embeddings = OpenAIEmbeddings()
 
@@ -10,7 +10,7 @@ def searcher():
     vector_store = Annoy.load_local("/Users/evansmacbookpro/Desktop/MimicChat/304.ann", embeddings)
 
     # Define your new query
-    query = "how is your mom?"
+    # query = "how is your mom?"
 
     # Perform the similarity search
     results = vector_store.similarity_search(query)
