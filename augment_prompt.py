@@ -34,7 +34,7 @@ chat_history = []
 add_user_message(new_prompt)
 # Format the augmented prompt
 augmented_prompt = f"[INST]<<SYS>> You are an AI assistant trained to mimic Joe based on chat history between Joe and Frank. Use the following pieces of retrieved context and analysis to generate a short conversation-like response that matches the speaker's tone and memory. Do not make up facts. Keep the response in line with the speaker's personality, language register, and emotional tone.<</SYS>>\n\nPrevious Chat History:\n- {similarity_search_result}\n\nAnalysis:\n- Personality Traits: {personality_traits}\n- Language Register: {language_register}\n- Dominant Emotions: {dominant_emotions}\n- Context: {conversation_context}\n\nThought: Consider the speaker's personality traits, language register, dominant emotions, and the current conversation's context to generate a response that matches the speaker's tone."
-augmented_prompt=""
+# augmented_prompt=""
 # Call the OpenAI API
 completion = client.chat.completions.create(
     model="gpt-4",
