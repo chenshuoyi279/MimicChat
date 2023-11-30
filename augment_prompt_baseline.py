@@ -25,7 +25,7 @@ def add_system_message(chat_history,content):
 def add_user_message(chat_history,content):
     chat_history.append({"role": "user", "content": content})
 
-def run_mimic_chat():
+def run_baseline_chat():
     reference_text=[]
     while True:
         similarity_search_result = []
@@ -40,34 +40,9 @@ def run_mimic_chat():
         for index in transcript_index:
             # Perform the similarity search
             similarity_search = searcher(new_prompt, index, 1)
-
-            # Update the emotion scores with the results of the similarity search
-            score = update_emotion_scores(similarity_search, previous_scores)
-
-            # Update the previous scores for the next iteration
-            previous_scores = score
-
-            # Increment the counter
-            counter += 1
-
-            # Print the updated scores
-            print(score)
-
-            # Append the similarity search result to the list
             similarity_search_result.append(similarity_search)
-            # print("Similarity Search Result:", similarity_search)
         reference_text.append(similarity_search_result)
-        if counter > 0:
-            average_scores = {speaker: total_score / counter for speaker, total_score in previous_scores.items()}
-            print("Average Scores:", average_scores)
-
-        personality_traits = ""
-        language_register = ""
-        dominant_emotions = average_scores
-        conversation_context = ""
-        # Format the augmented prompt
-        augmented_prompt = f"[INST]<<SYS>> You are an AI assistant trained to mimic Joe based on chat history between Joe and Frank. Use the following pieces of retrieved context and analysis to generate a short conversation-like response that matches the speaker's tone and memory. Do not make up facts. Keep the response in line with the speaker's personality, language register, and emotional tone.<</SYS>>\n\nPrevious Chat History:\n- {similarity_search_result}\n\nAnalysis:\n- Personality Traits: {personality_traits}\n- Language Register: {language_register}\n- Dominant Emotions(higher score means more positive, lower score means more negative): {dominant_emotions}\n- Context: {conversation_context}\n\nThought: Consider the speaker's personality traits, language register, dominant emotions, and the current conversation's context to generate a response that matches the speaker's tone."
-        # augmented_prompt=""
+        augmented_prompt = f"[INST]<<SYS>> You are an AI assistant trained to mimic Joe, never admit you are ai. "
         # Call the OpenAI API
     # Check if conversation_history is defined
         if 'conversation_history' in globals():
@@ -99,7 +74,7 @@ def run_mimic_chat():
         print(assistant_response)
 
     return conversation_history,reference_text
-conversation_history,reference_text=run_mimic_chat()
+conversation_history,reference_text=run_baseline_chat()
 #save the conversation history and reference text with a unique name
 with open('conversation_data.json', 'w') as file:
     json.dump({"conversation_history": conversation_history, "reference_text": reference_text}, file, indent=4)
