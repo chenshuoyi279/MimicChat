@@ -14,7 +14,7 @@ random.seed(1234)
 # Instantiate OpenAI client
 client = openai.OpenAI()
 transcript_index = [282, 304, 320, 366]
-
+conversation_history=[]
 
 # Get the similarity search result and define other variables
 def add_system_message(chat_history,content):
@@ -27,16 +27,16 @@ def add_user_message(chat_history,content):
 
 def run_mimic_chat():
     reference_text=[]
+    global conversation_history
     while True:
         similarity_search_result = []
         # new_prompt = "tell me a short story"
         previous_scores = {}
         counter = 0
-        
+
         new_prompt = input("User: ")
         if new_prompt.lower() == "quit":
             break
-        
         for index in transcript_index:
             # Perform the similarity search
             similarity_search = searcher(new_prompt, index, 1)
@@ -70,7 +70,7 @@ def run_mimic_chat():
         # augmented_prompt=""
         # Call the OpenAI API
     # Check if conversation_history is defined
-        if 'conversation_history' in globals():
+        if 'conversation_history' in globals() and conversation_history:
             # Check if the first message is from the system and update it
             if conversation_history and conversation_history[0]['role'] == 'system':
                 conversation_history[0]['content'] = augmented_prompt
@@ -91,7 +91,7 @@ def run_mimic_chat():
             temperature=0.7,
             messages=conversation_history,
         )
-        
+
         assistant_response = completion.choices[0].message.content
         conversation_history.append({"role": "assistant", "content": assistant_response})
 
@@ -99,6 +99,7 @@ def run_mimic_chat():
         print(assistant_response)
 
     return conversation_history,reference_text
+
 conversation_history,reference_text=run_mimic_chat()
 #save the conversation history and reference text with a unique name
 with open('conversation_data.json', 'w') as file:

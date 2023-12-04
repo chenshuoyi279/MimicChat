@@ -3,7 +3,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.tokenize import word_tokenize, sent_tokenize
 import nltk
-# nltk.download('punkt')
 
 def information_retrieval_evaluation(assistant_content, reference_text):
     # Combine assistant content into one text
@@ -42,7 +41,7 @@ def syntactic_similarity_evaluation(assistant_content, reference_text):
     return syntactic_similarity
 
 # Load from a JSON file
-with open('conversation_data.json', 'r') as file:
+with open('conversation_data_baseline.json', 'r') as file:
     data = json.load(file)
 
 conversation_history = data.get("conversation_history", [])

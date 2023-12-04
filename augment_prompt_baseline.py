@@ -14,7 +14,7 @@ random.seed(1234)
 # Instantiate OpenAI client
 client = openai.OpenAI()
 transcript_index = [282, 304, 320, 366]
-
+conversation_history=[]
 
 # Get the similarity search result and define other variables
 def add_system_message(chat_history,content):
@@ -27,6 +27,7 @@ def add_user_message(chat_history,content):
 
 def run_baseline_chat():
     reference_text=[]
+    global conversation_history
     while True:
         similarity_search_result = []
         # new_prompt = "tell me a short story"
@@ -45,7 +46,7 @@ def run_baseline_chat():
         augmented_prompt = f"[INST]<<SYS>> You are an AI assistant trained to mimic Joe, never admit you are ai. "
         # Call the OpenAI API
     # Check if conversation_history is defined
-        if 'conversation_history' in globals():
+        if 'conversation_history' in globals() and conversation_history:
             # Check if the first message is from the system and update it
             if conversation_history and conversation_history[0]['role'] == 'system':
                 conversation_history[0]['content'] = augmented_prompt
@@ -76,7 +77,7 @@ def run_baseline_chat():
     return conversation_history,reference_text
 conversation_history,reference_text=run_baseline_chat()
 #save the conversation history and reference text with a unique name
-with open('conversation_data.json', 'w') as file:
+with open('conversation_data_baseline.json', 'w') as file:
     json.dump({"conversation_history": conversation_history, "reference_text": reference_text}, file, indent=4)
 
 
